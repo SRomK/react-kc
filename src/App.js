@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import Card from "./Card";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    characters: [],
+  };
+
+  componentDidMount() {
+    //que se ejecutara justo despues del objeto state/constructor, y vamos a hacer una llamada fetch
+    fetch("characters.json")
+      .then(function (response) {
+        return response.json();
+      }) //convirtiendo la respuesta a json
+      .then((data) => {
+        this.setState({ characters: data });
+        console.log(data);//solo para comprobar que lo estamos recibiendo bien
+      }); //devolviendo la data
+  }
+
+    
+  render() {
+    return (
+      <div>
+        { this.state.characters.map((ch, i) => 
+          <Card key={i} name={ch.name} species={ch.species} image={ch.image}/>
+        )}
+        
+      </div>
+    );
+  }
 }
 
 export default App;
